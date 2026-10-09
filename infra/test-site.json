@@ -1,0 +1,4 @@
+{
+  "requestContext": { "http": { "method": "GET" } },
+  "rawPath": "/site/demo"
+}
