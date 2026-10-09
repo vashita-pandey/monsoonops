@@ -1,0 +1,10 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.*
+.aws/
+.venv/
+dist/
+build/
+*.zip
