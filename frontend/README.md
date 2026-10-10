@@ -14,7 +14,7 @@ When heavy rain is hours away, nobody in an apartment complex owns the next 30 m
 
 ## What it does
 
-- **Trigger:** a rules engine compares the forecast with the site profile and sets the site to Normal, Watch or High, with a visible reason. Thresholds follow IMD's heavy (64.5 mm) and very heavy (115.6 mm) classes. A low-lying site or one with flood history steps up one level.
+- **Trigger:** a rules engine compares the forecast with the site profile and sets the site to Normal, Watch or High and stores the reason for every trigger. Thresholds follow IMD's heavy (64.5 mm) and very heavy (115.6 mm) classes. A low-lying site or one with flood history steps up one level.
 - **Assign:** tasks fan out by role from templates (admin, security, maintenance, resident). Each resident gets one task for their own vehicle.
 - **Prove:** critical tasks need evidence. A photo goes straight to a private S3 bucket and the server checks the file exists. A test log is stored the same way. A check-in task needs a different person to confirm it.
 - **Escalate:** at 3 hours left, unacknowledged tasks are escalated. At 1 hour left, open critical tasks turn the site red. At the rain window, the readiness score is locked.
