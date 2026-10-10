@@ -399,6 +399,8 @@ def handler(event, context):
     method = event["requestContext"]["http"]["method"]
     parts = event["rawPath"].strip("/").split("/")
     query = event.get("queryStringParameters") or {}
+    if method == "OPTIONS":
+        return {"statusCode": 204, "headers": {}, "body": ""}
 
     if len(parts) > 1 and parts[0] == "incident" and parts[1] == "latest":
         latest = latest_incident_id()
