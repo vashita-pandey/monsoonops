@@ -1,12 +1,16 @@
 import { useState } from "react";
 import Admin from "./Admin";
 import RoleScreen from "./RoleScreen";
+import Resident from "./Resident";
+import Vehicles from "./Vehicles";
 import "./App.css";
 
 const TABS = [
   { id: "admin", label: "Admin" },
+  { id: "vehicles", label: "Vehicles" },
   { id: "security", label: "Security" },
   { id: "maintenance", label: "Maintenance" },
+  { id: "resident", label: "Resident" },
 ];
 
 export default function App() {
@@ -33,8 +37,10 @@ export default function App() {
 
       <main>
         {tab === "admin" && <Admin />}
+        {tab === "vehicles" && <Vehicles />}
         {tab === "security" && <RoleScreen role="security" defaultName="Ravi" />}
         {tab === "maintenance" && <RoleScreen role="maintenance" defaultName="Meena" />}
+        {tab === "resident" && <Resident />}
       </main>
     </div>
   );

@@ -371,7 +371,28 @@ def time_warp(body):
     run_escalation(inc_id)
     return status_view(inc_id)
 
-
+def vehicle_priority(inc_id):
+    site = table.get_item(Key={"pk": "SITE#demo", "sk": "PROFILE"}).get("Item", {})
+    low = set(site.get("lowLyingBays", []))
+    vehicles = table.query(
+        KeyConditionExpression=Key("pk").eq("SITE#demo") & Key("sk").begins_with("VEH#")
+    )["Items"]
+    done_keys = {
+        t["vehicleKey"] for t in all_tasks(inc_id)
+        if t.get("vehicleKey") and t["status"] == "done"
+    }
+    rows = []
+    for v in vehicles:
+        rows.append({
+            "vehicleKey": v["sk"], "flat": v["flat"], "plateLast4": v["plateLast4"],
+            "level": v["level"], "bay": v["bay"], "moveToSlot": v["moveToSlot"],
+            "lowLying": v["bay"] in low,
+            "moved": v["sk"] in done_keys,
+        })
+    rows.sort(key=lambda r: (r["moved"], -int(r["level"][1:]),
+                             0 if r["lowLying"] else 1, r["bay"]))
+    remaining = len([r for r in rows if not r["moved"]])
+    return respond(200, {"vehicles": rows, "remaining": remaining, "total": len(rows)})
 # ---------- router ----------
 
 def handler(event, context):
@@ -414,5 +435,6 @@ def handler(event, context):
 
     if method == "POST" and parts == ["demo", "time-warp"]:
         return time_warp(get_body(event))
-
+    if method == "GET" and len(parts) == 3 and parts[0] == "incident" and parts[2] == "vehicles":
+        return vehicle_priority(parts[1])
     return respond(404, {"error": "route not found"})

@@ -39,3 +39,4 @@ export async function uploadEvidence(taskId, blob, contentType) {
   if (!res.ok) throw new Error("Upload failed. Please try again.");
   return key;
 }
+export const getVehicles = () => call("GET", "/incident/latest/vehicles");
